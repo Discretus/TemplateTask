@@ -16,10 +16,26 @@ int main()
 	int_queue2.push(150);
 
 	queue<int> int_queue3 = int_queue1.merge(int_queue2);
-	// int_queue1.resize(2); // Throws an exception
+
+	try
+	{
+		int_queue1.resize(2);
+	}
+	catch (std::exception ex)
+	{
+		std::cout << ex.what() << std::endl;
+	}
 	while (!int_queue3.empty())
 	{
 		std::cout << int_queue3.front() << std::endl;
 		int_queue3.pop();
+	}
+	try
+	{
+		int_queue3.pop();
+	}
+	catch (std::exception ex)
+	{
+		std::cout << ex.what() << std::endl;
 	}
 }
