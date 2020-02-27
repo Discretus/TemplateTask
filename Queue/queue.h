@@ -32,7 +32,7 @@ public:
 	void push(const queue&);
 	void pop();
 
-	queue<T> merge(const queue&);
+	queue<T> merge(const queue&) const;
 };
 
 template <typename T>
@@ -161,7 +161,7 @@ void queue<T>::push(const queue& other)
 }
 
 template <typename T>
-queue<T> queue<T>::merge(const queue& other)
+queue<T> queue<T>::merge(const queue& other) const
 {
 	queue<T> new_queue(max_capacity_ + other.max_capacity_);
 	new_queue.push(*this);
