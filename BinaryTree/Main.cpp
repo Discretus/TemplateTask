@@ -11,9 +11,11 @@ int main()
 	tree.insert(-2);
 	tree.insert(0);
 	tree.insert(8);
-	for (auto value : tree.leaves())
+	for (auto value : tree.values())
 	{
 		std::cout << value << std::endl;
 	}
+	
+	std::cout << std::endl << tree.search(3);
 
 }

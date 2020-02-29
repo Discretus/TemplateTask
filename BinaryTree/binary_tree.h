@@ -20,8 +20,8 @@ public:
 	binary_tree(std::vector<T>);
 	~binary_tree();
 	
-	void insert(T);
-	void remove(T);
+	bool insert(T);
+	bool remove(T);
 	
 	std::vector<T> values();
 	std::vector<T> leaves();
@@ -60,35 +60,38 @@ binary_tree<T>::~binary_tree()
 }
 
 template <typename T>
-void binary_tree<T>::insert(T value)
+bool binary_tree<T>::insert(T value)
 {
-	std::function<void(node*, node*)> helper = [&helper](node* current, node* new_node) -> void
+	node* new_node = new node(value);
+	std::function<void(node*)> helper = [&new_node, &helper](node* current) -> void
 	{
-		if (new_node->value >= current->value) {
+		if (new_node->value > current->value) {
 			if (current->right_child != nullptr)
-				helper(current->right_child, new_node);
+				helper(current->right_child);
 			else
 				current->right_child = new_node;
 		}
 		else
 		{
 			if (current->left_child != nullptr)
-				helper(current->left_child, new_node);
+				helper(current->left_child);
 			else
 				current->left_child = new_node;
 		}
 	};
-	node* new_node = new node(value);
 	if (root_ == nullptr)
 	{
 		root_ = new_node;
-		return;
+		return true;
 	}
-	helper(root_, new_node);
+	if (search(value))
+		return false;
+	helper(root_);
+	return true;
 }
 
 //template <typename T>
-//void binary_tree<T>::remove(T)
+//bool binary_tree<T>::remove(T)
 //{
 //	
 //}
@@ -127,3 +130,25 @@ std::vector<T> binary_tree<T>::leaves()
 	std::vector<T> result_vector(std::begin(result_list), std::end(result_list));
 	return result_vector;
 }
+
+template <typename T>
+bool binary_tree<T>::search(T value)
+{
+	std::function<bool(node*)> helper = [value, &helper](node* current) -> bool
+	{
+		if (value == current->value) 
+			return true;
+		if (current->left_child != nullptr && value < current->value)
+			return helper(current->left_child);
+		if (current->right_child != nullptr && value > current->value)
+			return helper(current->right_child);
+		return false;
+	};
+	return helper(root_);
+}
+
+//template <typename T>
+//binary_tree<T>::operator std::string()
+//{
+//	
+//}
